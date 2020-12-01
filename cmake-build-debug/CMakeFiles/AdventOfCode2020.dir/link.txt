@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/AdventOfCode2020.dir/main.cpp.o  -o AdventOfCode2020 

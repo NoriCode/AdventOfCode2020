@@ -1,0 +1,5 @@
+# IntelliJ/CLion
+/.idea/
+*.ipr
+*.iws
+*.iml
