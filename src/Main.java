@@ -1,19 +1,19 @@
-package com.company;
-
 import java.io.*;
 import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        // write your code here
+
+        String path = "F:\\Programmierkram\\AdventOfCode2020\\src\\";
+
         System.out.println("\nDay 1");
-        System.out.println(d1T1());
-        System.out.println(d1T2());
+        System.out.println(d1T1(path));
+        System.out.println(d1T2(path));
 
         System.out.println("\nDay 2");
-        System.out.println(d2T1());
-        System.out.println(d2T2());
+        System.out.println(d2T1(path));
+        System.out.println(d2T2(path));
     }
 
     public static List<String> inputreader(String filename) throws IOException {
@@ -27,8 +27,8 @@ public class Main {
         return input;
     }
 
-    public static int d1T1() throws IOException {
-        List<String> input = inputreader("F:\\Programmierkram\\AdventOfCode2020Java\\src\\com\\company\\DayOneInput.txt");
+    public static int d1T1(String path) throws IOException {
+        List<String> input = inputreader(path + "d1.txt");
         List<Integer> inputInt = new ArrayList<Integer>();
         for (String data : input) {
             inputInt.add(Integer.parseInt(data));
@@ -43,8 +43,8 @@ public class Main {
         return 0;
     }
 
-    public static int d1T2() throws IOException {
-        List<String> input = inputreader("F:\\Programmierkram\\AdventOfCode2020Java\\src\\com\\company\\DayOneInput.txt");
+    public static int d1T2(String path) throws IOException {
+        List<String> input = inputreader(path + "d1.txt");
         List<Integer> inputInt = new ArrayList<Integer>();
         for (String data : input) {
             inputInt.add(Integer.parseInt(data));
@@ -61,8 +61,8 @@ public class Main {
         return 0;
     }
 
-    public static int d2T1() throws IOException {
-        List<String> input = inputreader("F:\\Programmierkram\\AdventOfCode2020Java\\src\\com\\company\\DayTwoInput.txt");
+    public static int d2T1(String path) throws IOException {
+        List<String> input = inputreader(path +"d2.txt");
         List<String[]> inputdata = new ArrayList<String[]>();
 
         int correctanswer = 0;
@@ -92,8 +92,8 @@ public class Main {
         return correctanswer;
     }
 
-    public static int d2T2() throws IOException {
-        List<String> input = inputreader("F:\\Programmierkram\\AdventOfCode2020Java\\src\\com\\company\\DayTwoInput.txt");
+    public static int d2T2(String path) throws IOException {
+        List<String> input = inputreader(path +"d2.txt");
         List<String[]> inputdata = new ArrayList<String[]>();
 
         int correctanswer = 0;

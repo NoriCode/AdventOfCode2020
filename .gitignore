@@ -1,4 +1,5 @@
 # IntelliJ/CLion
+/out/
 /.idea/
 *.ipr
 *.iws
