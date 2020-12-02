@@ -92,7 +92,7 @@ public class Main {
         br.close();
         return input;
     }
-    
+
     public static void d1(String path) throws IOException {
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
@@ -129,6 +129,12 @@ public class Main {
         List<String[]> inputdata = new ArrayList<>();
 
         for (String data : input) {
+            /*
+            data = 3-5 f: fgfff
+            inputdata[0] = 3-5
+            inputdata[1] = f:
+            inputdata[2] = fgfff
+             */
             inputdata.add(data.split(" "));
         }
 
@@ -143,22 +149,17 @@ public class Main {
             spliStr = data[1].split(":");
             String searchChar = spliStr[0];
 
-            char[] password = data[2].toCharArray();
-
-            for (char c : password) {
-                if (Character.toString(c).equals(searchChar)) {
+            for (int i = 0; i < data[2].length(); i++) {
+                if (data[2].charAt(i) == searchChar.charAt(0)) {
                     counter++;
+                    if(i == low-1 || i == high-1){
+                        found = !found;
+                    }
                 }
             }
+
             if (counter >= low && counter <= high) {
                 correctanswerT1++;
-            }
-
-            if (Character.toString(password[low - 1]).equals(searchChar)) {
-                found = true;
-            }
-            if (Character.toString(password[high - 1]).equals(searchChar)) {
-                found = !found;
             }
 
             if (found) {
