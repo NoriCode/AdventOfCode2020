@@ -13,7 +13,7 @@ public class Main {
 
         System.out.println("\nDay 3");
         d3(path);
-
+/*
         System.out.println("\nDay 4");
         d4(path);
 
@@ -78,7 +78,7 @@ public class Main {
         d24(path);
 
         System.out.println("\nDay 25");
-        d25(path);
+        d25(path);*/
     }
 
     public static List<String> inputreader(String filename) throws IOException {
@@ -198,14 +198,38 @@ public class Main {
         long timer1;
         long timer2;
 
-        int correctanswerT1 = 0;
-        int correctanswerT2 = 0;
+        int correctanswerT1 ;
+        long correctanswerT2 = 1;
+        //List<String> input = inputreader(path + "testcaseD3.txt");
         List<String> input = inputreader(path + "d3.txt");
 
+        int[] travelRight = new int[]{3, 1, 5, 7, 1};
+        int[] travelDown = new int[]{1, 1, 1, 1, 2};
+
+        int[] partsesult = new int[travelRight.length];
+
+        int width = input.get(0).length();
+        int actualWidth = 0;
+
         timer1 = System.currentTimeMillis();
-        for (String data : input) {
-            System.out.println(data);
+        for (int i = 0; i < travelRight.length; i++) {
+            for (String data : input) {
+                if (actualWidth > width - 1) {
+                    actualWidth -= width;
+                }
+                if (data.charAt(actualWidth) == '#') {
+                    partsesult[i]++;
+                }
+                actualWidth += travelRight[i];
+            }
         }
+        correctanswerT1 = partsesult[0];
+
+        for (int i = 0; i < partsesult.length; i++) {
+            correctanswerT2 = correctanswerT2 * partsesult[i];
+            System.out.println(partsesult[i]);
+        }
+
         timer2 = System.currentTimeMillis();
 
         System.out.println("Task One: " + correctanswerT1);
