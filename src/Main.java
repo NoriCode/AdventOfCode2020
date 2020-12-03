@@ -230,7 +230,6 @@ public class Main {
 
         for (int i = 0; i < partsesult.length; i++) {
             correctanswerT2 = correctanswerT2 * partsesult[i];
-            System.out.println(partsesult[i]);
         }
 
         timer2 = System.currentTimeMillis();
