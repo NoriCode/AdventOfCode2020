@@ -221,9 +221,7 @@ public class Main {
                 if (input.get(j).charAt(actualWidth) == '#') {
                     partsesult[i]++;
                 }
-                if (travelDown[i] != 1) {
-                    j += travelDown[i] - 1;
-                }
+                j += travelDown[i] - 1;
                 actualWidth += travelRight[i];
             }
         }
@@ -232,6 +230,7 @@ public class Main {
 
         for (int i = 0; i < partsesult.length; i++) {
             correctanswerT2 = correctanswerT2 * partsesult[i];
+            System.out.println(partsesult[i]);
         }
 
         timer2 = System.currentTimeMillis();
