@@ -1,3 +1,4 @@
+import javax.swing.plaf.IconUIResource;
 import java.io.*;
 import java.util.*;
 
@@ -16,7 +17,7 @@ public class Main {
 
         System.out.println("\nDay 4");
         d4(path);
-
+/*
         System.out.println("\nDay 5");
         d5(path);
 
@@ -78,10 +79,10 @@ public class Main {
         d24(path);
 
         System.out.println("\nDay 25");
-        d25(path);
+        d25(path);*/
     }
 
-    public static List<String> inputreader(String filename) throws IOException {
+    public static List<String> inputreaderEachLineValue(String filename) throws IOException {
         List<String> input = new ArrayList<>();
 
         BufferedReader br = new BufferedReader(new FileReader(filename));
@@ -92,13 +93,46 @@ public class Main {
         return input;
     }
 
+    public static List<String> inputreaderEmptyLineSeperated(String filename) throws IOException {
+        List<String> input = new ArrayList<>();
+
+        BufferedReader br = new BufferedReader(new FileReader(filename));
+
+        String passPortPart = "";
+
+        String line = br.readLine();
+
+        while (line != null) {
+
+            if (!line.isEmpty()) {
+                passPortPart = passPortPart + line + " ";
+            } else {
+                input.add(passPortPart);
+                passPortPart = "";
+            }
+            line = br.readLine();
+
+            if (line == null) {
+                input.add(passPortPart);
+            }
+        }
+        br.close();
+
+        // System.out.println(input.size());
+
+        for (String data : input) {
+            // System.out.println(data);
+        }
+        return input;
+    }
+
     public static void d1(String path) throws IOException {
         long timer1;
         long timer2;
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
 
-        List<String> input = inputreader(path + "d1.txt");
+        List<String> input = inputreaderEachLineValue(path + "d1.txt");
         List<Integer> inputInt = new ArrayList<>();
 
         timer1 = System.currentTimeMillis();
@@ -144,7 +178,7 @@ public class Main {
         String searchChar;
         String[] spliStr;
 
-        List<String> input = inputreader(path + "d2.txt");
+        List<String> input = inputreaderEachLineValue(path + "d2.txt");
         List<String[]> inputdata = new ArrayList<>();
 
         timer1 = System.currentTimeMillis();
@@ -200,7 +234,7 @@ public class Main {
 
         int correctanswerT1;
         long correctanswerT2 = 1;
-        List<String> input = inputreader(path + "d3.txt");
+        List<String> input = inputreaderEachLineValue(path + "d3.txt");
 
         int[] travelRight = new int[]{1, 3, 5, 7, 1};
         int[] travelDown = new int[]{1, 1, 1, 1, 2};
@@ -244,12 +278,121 @@ public class Main {
         long timer2;
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d4.txt");
+
+        String[] codes = {"byr:", "iyr:", "eyr:", "hgt:", "hcl:", "ecl:", "pid:"};
+        List<String> input = inputreaderEmptyLineSeperated(path + "d4.txt");
 
         timer1 = System.currentTimeMillis();
+
+
         for (String data : input) {
-            System.out.println(data);
+            List<String> validPP = new ArrayList<>();
+            ;
+            boolean correct = false;
+            for (String code : codes) {
+                if (data.contains(code)) {
+                    correct = true;
+                } else {
+                    if (!code.equals("cid:")) {
+                        correct = false;
+                        break;
+                    }
+                }
+            }
+            if (correct) {
+                correctanswerT1++;
+
+                String[] validPUnsort = data.split(" ");
+
+                for (String data2 : validPUnsort) {
+                    validPP.add(data2);
+                }
+                if (validPP.size() == 7) {
+                    validPP.add("cid: 420");
+                }
+
+                Collections.sort(validPP);
+
+                boolean ppCorrect = false;
+                boolean needCheck = true;
+
+
+                int byr = Integer.parseInt(validPP.get(0).substring(validPP.get(0).indexOf(":") + 1));
+                if (byr > 2002 || byr < 1920) {
+                    needCheck = false;
+                }
+
+                if (needCheck) {
+                    String ecl = validPP.get(2).substring(validPP.get(2).indexOf(":") + 1);
+
+                    String[] eclList = {"amb", "blu", "brn", "gry", "grn", "hzl", "oth"};
+                    boolean hit = false;
+
+                    for (String eclSingle : eclList) {
+                        if (ecl.equals(eclSingle)) {
+                            hit = true;
+                            break;
+                        }
+                    }
+                    if (!hit) {
+                        needCheck = false;
+                    }
+
+                    if (needCheck) {
+                        int eyr = Integer.parseInt(validPP.get(3).substring(validPP.get(3).indexOf(":") + 1));
+
+                        if (eyr > 2030 || eyr < 2020) {
+                            needCheck = false;
+                        }
+
+                        if (needCheck) {
+                            String hcl = validPP.get(4).substring(validPP.get(4).indexOf(":") + 1);
+                            if (!hcl.matches("#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})")) {
+                                needCheck = false;
+                            }
+
+                            if (needCheck) {
+                                String hgt = validPP.get(5).substring(validPP.get(5).indexOf(":") + 1);
+                                if (hgt.contains("in")) {
+                                    int hgt2 = Integer.parseInt(hgt.substring(0, hgt.indexOf("i")));
+                                    if (hgt2 > 76 || hgt2 < 59) {
+                                        needCheck = false;
+                                    }
+
+                                } else if (hgt.contains("cm")) {
+                                    int hgt2 = Integer.parseInt(hgt.substring(0, hgt.indexOf("c")));
+                                    if (hgt2 > 193 || hgt2 < 150) {
+                                        needCheck = false;
+                                    }
+                                } else {
+                                    needCheck = false;
+                                }
+
+                                if (needCheck) {
+                                    int iyr = Integer.parseInt(validPP.get(6).substring(validPP.get(6).indexOf(":") + 1));
+                                    if (iyr > 2020 || iyr < 2010) {
+                                        needCheck = false;
+                                    }
+
+                                    if (needCheck) {
+                                        String pid = validPP.get(7).substring(validPP.get(7).indexOf(":") + 1);
+                                        if (pid.matches("-?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]")) {
+                                            ppCorrect = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (ppCorrect) {
+                    correctanswerT2++;
+                }
+            }
         }
+
+
         timer2 = System.currentTimeMillis();
 
         System.out.println("Task One: " + correctanswerT1);
@@ -262,7 +405,7 @@ public class Main {
         long timer2;
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d5.txt");
+        List<String> input = inputreaderEachLineValue(path + "d5.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -280,7 +423,7 @@ public class Main {
         long timer2;
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d6.txt");
+        List<String> input = inputreaderEachLineValue(path + "d6.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -298,7 +441,7 @@ public class Main {
         long timer2;
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d7.txt");
+        List<String> input = inputreaderEachLineValue(path + "d7.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -316,7 +459,7 @@ public class Main {
         long timer2;
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d8.txt");
+        List<String> input = inputreaderEachLineValue(path + "d8.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -334,7 +477,7 @@ public class Main {
         long timer2;
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d9.txt");
+        List<String> input = inputreaderEachLineValue(path + "d9.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -352,7 +495,7 @@ public class Main {
         long timer2;
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d10.txt");
+        List<String> input = inputreaderEachLineValue(path + "d10.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -371,7 +514,7 @@ public class Main {
 
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d11.txt");
+        List<String> input = inputreaderEachLineValue(path + "d11.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -390,7 +533,7 @@ public class Main {
 
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d12.txt");
+        List<String> input = inputreaderEachLineValue(path + "d12.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -409,7 +552,7 @@ public class Main {
 
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d13.txt");
+        List<String> input = inputreaderEachLineValue(path + "d13.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -428,7 +571,7 @@ public class Main {
 
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d14.txt");
+        List<String> input = inputreaderEachLineValue(path + "d14.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -447,7 +590,7 @@ public class Main {
 
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d15.txt");
+        List<String> input = inputreaderEachLineValue(path + "d15.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -466,7 +609,7 @@ public class Main {
 
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d16.txt");
+        List<String> input = inputreaderEachLineValue(path + "d16.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -485,7 +628,7 @@ public class Main {
 
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d17.txt");
+        List<String> input = inputreaderEachLineValue(path + "d17.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -504,7 +647,7 @@ public class Main {
 
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d18.txt");
+        List<String> input = inputreaderEachLineValue(path + "d18.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -523,7 +666,7 @@ public class Main {
 
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d19.txt");
+        List<String> input = inputreaderEachLineValue(path + "d19.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -542,7 +685,7 @@ public class Main {
 
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d20.txt");
+        List<String> input = inputreaderEachLineValue(path + "d20.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -561,7 +704,7 @@ public class Main {
 
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d21.txt");
+        List<String> input = inputreaderEachLineValue(path + "d21.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -580,7 +723,7 @@ public class Main {
 
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d22.txt");
+        List<String> input = inputreaderEachLineValue(path + "d22.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -599,7 +742,7 @@ public class Main {
 
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d23.txt");
+        List<String> input = inputreaderEachLineValue(path + "d23.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -618,7 +761,7 @@ public class Main {
 
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d24.txt");
+        List<String> input = inputreaderEachLineValue(path + "d24.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
@@ -637,7 +780,7 @@ public class Main {
 
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreader(path + "d25.txt");
+        List<String> input = inputreaderEachLineValue(path + "d25.txt");
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
