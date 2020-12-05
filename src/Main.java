@@ -237,6 +237,7 @@ public class Main {
         int correctanswerT2 = 0;
 
         String[] codes = {"byr:", "iyr:", "eyr:", "hgt:", "hcl:", "ecl:", "pid:"};
+        String[] eclList = {"amb", "blu", "brn", "gry", "grn", "hzl", "oth"};
         List<String> input = Helpers.inputreaderEmptyLineSeperated(path + "d4.txt");
         List<String> validPP = new ArrayList<>();
 
@@ -256,7 +257,6 @@ public class Main {
                     }
                 }
             }
-
             if (correct) {
                 correctanswerT1++;
 
@@ -266,78 +266,46 @@ public class Main {
                 }
 
                 Collections.sort(validPP);
+                boolean ppCorrect = true;
+                boolean hit = false;
 
-                boolean ppCorrect = false;
-                boolean needCheck = true;
-
+                String ecl = validPP.get(2).substring(validPP.get(2).indexOf(":") + 1);
+                String hcl = validPP.get(4).substring(validPP.get(4).indexOf(":") + 1);
+                String hgt = validPP.get(5).substring(validPP.get(5).indexOf(":") + 1);
+                String pid = validPP.get(7).substring(validPP.get(7).indexOf(":") + 1);
 
                 int byr = Integer.parseInt(validPP.get(0).substring(validPP.get(0).indexOf(":") + 1));
-                if (byr > 2002 || byr < 1920) {
-                    needCheck = false;
+                int eyr = Integer.parseInt(validPP.get(3).substring(validPP.get(3).indexOf(":") + 1));
+                int iyr = Integer.parseInt(validPP.get(6).substring(validPP.get(6).indexOf(":") + 1));
+                int hgt2 = Integer.parseInt(hgt.substring(0, hgt.length() - 2));
+
+                for (String eclSingle : eclList) {
+                    if (ecl.equals(eclSingle)) {
+                        hit = true;
+                        break;
+                    }
+                }
+                if (!hit) {
+                    ppCorrect = false;
                 }
 
-                if (needCheck) {
-                    String ecl = validPP.get(2).substring(validPP.get(2).indexOf(":") + 1);
+                if ((byr > 2002 || byr < 1920) || (eyr > 2030 || eyr < 2020) || (iyr > 2020 || iyr < 2010)) {
+                    ppCorrect = false;
+                }
 
-                    String[] eclList = {"amb", "blu", "brn", "gry", "grn", "hzl", "oth"};
-                    boolean hit = false;
-
-                    for (String eclSingle : eclList) {
-                        if (ecl.equals(eclSingle)) {
-                            hit = true;
-                            break;
-                        }
+                if ((!pid.matches("-?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]")) || (!hcl.matches("#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})"))) {
+                    ppCorrect = false;
+                }
+                if (hgt.contains("in")) {
+                    if (hgt2 > 76 || hgt2 < 59) {
+                        ppCorrect = false;
                     }
-                    if (!hit) {
-                        needCheck = false;
+                } else if (hgt.contains("cm")) {
+                    if (hgt2 > 193 || hgt2 < 150) {
+                        ppCorrect = false;
                     }
-
-                    if (needCheck) {
-                        int eyr = Integer.parseInt(validPP.get(3).substring(validPP.get(3).indexOf(":") + 1));
-
-                        if (eyr > 2030 || eyr < 2020) {
-                            needCheck = false;
-                        }
-
-                        if (needCheck) {
-                            String hcl = validPP.get(4).substring(validPP.get(4).indexOf(":") + 1);
-                            if (!hcl.matches("#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})")) {
-                                needCheck = false;
-                            }
-
-                            if (needCheck) {
-                                String hgt = validPP.get(5).substring(validPP.get(5).indexOf(":") + 1);
-                                if (hgt.contains("in")) {
-                                    int hgt2 = Integer.parseInt(hgt.substring(0, hgt.indexOf("i")));
-                                    if (hgt2 > 76 || hgt2 < 59) {
-                                        needCheck = false;
-                                    }
-
-                                } else if (hgt.contains("cm")) {
-                                    int hgt2 = Integer.parseInt(hgt.substring(0, hgt.indexOf("c")));
-                                    if (hgt2 > 193 || hgt2 < 150) {
-                                        needCheck = false;
-                                    }
-                                } else {
-                                    needCheck = false;
-                                }
-
-                                if (needCheck) {
-                                    int iyr = Integer.parseInt(validPP.get(6).substring(validPP.get(6).indexOf(":") + 1));
-                                    if (iyr > 2020 || iyr < 2010) {
-                                        needCheck = false;
-                                    }
-
-                                    if (needCheck) {
-                                        String pid = validPP.get(7).substring(validPP.get(7).indexOf(":") + 1);
-                                        if (pid.matches("-?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]")) {
-                                            ppCorrect = true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                } else {
+                    ppCorrect = false;
                 }
 
                 if (ppCorrect) {
@@ -345,7 +313,6 @@ public class Main {
                 }
             }
         }
-
 
         timer2 = System.currentTimeMillis();
 
@@ -370,7 +337,7 @@ public class Main {
             data = data.replaceAll("L", "0");
             data = data.replaceAll("B", "1");
             data = data.replaceAll("R", "1");
-            seats.add(Integer.parseInt(data,2));
+            seats.add(Integer.parseInt(data, 2));
         }
 
         Collections.sort(seats);
