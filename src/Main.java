@@ -405,7 +405,8 @@ public class Main {
         long timer2;
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = inputreaderEachLineValue(path + "d5.txt");
+        int offset;
+                List<String> input = inputreaderEachLineValue(path + "d5.txt");
         List<Integer> seats = new ArrayList<>();
 
         /*
@@ -421,6 +422,7 @@ public class Main {
             int collum = 0;
             int count = 0;
             int seat = 0;
+
 
             data = data.replaceAll("F", "0");
             data = data.replaceAll("L", "0");
@@ -444,16 +446,18 @@ public class Main {
                 correctanswerT1 = seat;
             }
         }
-        timer2 = System.currentTimeMillis();
 
         Collections.sort(seats);
 
+        offset = seats.get(0);
+
         for (int i = 0; i < seats.size(); i++) {
-            if (seats.get(i) != i + 100) {
-                correctanswerT2 = i + 100;
+            if (seats.get(i) != i + offset) {
+                correctanswerT2 = i + offset;
                 break;
             }
         }
+        timer2 = System.currentTimeMillis();
 
         System.out.println("Task One: " + correctanswerT1);
         System.out.println("Task Two: " + correctanswerT2);
