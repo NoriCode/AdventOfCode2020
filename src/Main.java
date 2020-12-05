@@ -17,10 +17,10 @@ public class Main {
 
         System.out.println("\nDay 4");
         d4(path);
-/*
+
         System.out.println("\nDay 5");
         d5(path);
-
+/*
         System.out.println("\nDay 6");
         d6(path);
 
@@ -406,12 +406,54 @@ public class Main {
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
         List<String> input = inputreaderEachLineValue(path + "d5.txt");
+        List<Integer> seats = new ArrayList<>();
+
+        /*
+        F = 0
+        B = 1
+        R = 1
+        L = 0
+         */
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
-            System.out.println(data);
+            int row = 0;
+            int collum = 0;
+            int count = 0;
+            int seat = 0;
+
+            data = data.replaceAll("F", "0");
+            data = data.replaceAll("L", "0");
+            data = data.replaceAll("B", "1");
+            data = data.replaceAll("R", "1");
+
+            for (int i = 6; i >= 0; i--) {
+                int number = Integer.parseInt(String.valueOf(data.charAt(i)));
+                row = (int) (row + (number * Math.pow(2, count)));
+                count++;
+            }
+            count = 0;
+            for (int i = 9; i >= 7; i--) {
+                int number = Integer.parseInt(String.valueOf(data.charAt(i)));
+                collum = (int) (collum + (number * Math.pow(2, count)));
+                count++;
+            }
+            seat = (row * 8) + collum;
+            seats.add(seat);
+            if (seat > correctanswerT1) {
+                correctanswerT1 = seat;
+            }
         }
         timer2 = System.currentTimeMillis();
+
+        Collections.sort(seats);
+
+        for (int i = 0; i < seats.size(); i++) {
+            if (seats.get(i) != i + 100) {
+                correctanswerT2 = i + 100;
+                break;
+            }
+        }
 
         System.out.println("Task One: " + correctanswerT1);
         System.out.println("Task Two: " + correctanswerT2);
