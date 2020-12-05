@@ -130,8 +130,6 @@ public class Main {
         int counter;
 
         boolean found;
-
-        String searchChar;
         String[] spliStr;
 
         List<String> input = Helpers.inputreaderEachLineValue(path + "d2.txt");
@@ -140,15 +138,8 @@ public class Main {
         timer1 = System.currentTimeMillis();
 
         for (String data : input) {
-            /*
-            data = 3-5 f: fgfff
-            inputdata[0] = 3-5
-            inputdata[1] = f:
-            inputdata[2] = fgfff
-             */
             inputdata.add(data.split(" "));
         }
-
 
         for (String[] data : inputdata) {
             found = false;
@@ -158,10 +149,8 @@ public class Main {
             low = Integer.parseInt(spliStr[0]);
             high = Integer.parseInt(spliStr[1]);
 
-            searchChar = data[1];
-
             for (int i = 0; i < data[2].length(); i++) {
-                if (data[2].charAt(i) == searchChar.charAt(0)) {
+                if (data[2].charAt(i) == data[1].charAt(0)) {
                     counter++;
                     if (i == low - 1 || i == high - 1) {
                         found = !found;
@@ -169,7 +158,7 @@ public class Main {
                 }
             }
 
-            if (counter >= low && counter <= high) {
+            if (counter > low && counter < high) {
                 correctanswerT1++;
             }
 
@@ -284,15 +273,9 @@ public class Main {
                         break;
                     }
                 }
-                if (!hit) {
-                    correct = false;
-                }
-
-                if ((byr > 2002 || byr < 1920) || (eyr > 2030 || eyr < 2020) || (iyr > 2020 || iyr < 2010)) {
-                    correct = false;
-                }
-
-                if ((!pid.matches("-?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]")) || (!hcl.matches("#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})"))) {
+                if ((!hit) || ((byr > 2002 || byr < 1920) || (eyr > 2030 || eyr < 2020) || (iyr > 2020 || iyr < 2010))
+                        || ((!pid.matches("-?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]"))
+                        || (!hcl.matches("#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})")))) {
                     correct = false;
                 }
                 if (hgt.contains("in")) {
@@ -323,7 +306,7 @@ public class Main {
     public static void d5(String path) throws IOException {
         long timer1;
         long timer2;
-        int correctanswerT1 = 0;
+        int correctanswerT1;
         int correctanswerT2 = 0;
         int offset;
         List<String> input = Helpers.inputreaderEachLineValue(path + "d5.txt");
