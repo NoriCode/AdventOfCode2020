@@ -1,4 +1,3 @@
-import javax.swing.plaf.IconUIResource;
 import java.io.*;
 import java.util.*;
 
@@ -98,31 +97,21 @@ public class Main {
 
         BufferedReader br = new BufferedReader(new FileReader(filename));
 
-        String passPortPart = "";
+        StringBuilder passPortPart = new StringBuilder();
 
         String line = br.readLine();
 
         while (line != null) {
-
             if (!line.isEmpty()) {
-                passPortPart = passPortPart + line + " ";
+                passPortPart.append(line).append(" ");
             } else {
-                input.add(passPortPart);
-                passPortPart = "";
+                input.add(passPortPart.toString());
+                passPortPart = new StringBuilder();
             }
             line = br.readLine();
-
-            if (line == null) {
-                input.add(passPortPart);
-            }
         }
+        input.add(passPortPart.toString());
         br.close();
-
-        // System.out.println(input.size());
-
-        for (String data : input) {
-            // System.out.println(data);
-        }
         return input;
     }
 
@@ -394,7 +383,7 @@ public class Main {
         timer2 = System.currentTimeMillis();
 
         System.out.println("Task One: " + correctanswerT1);
-        System.out.println("Task Two: " + correctanswerT2);
+        System.out.println("Task Two: " + (correctanswerT2 - 1));
         System.out.println("Time needed in ms " + (timer2 - timer1));
     }
 
@@ -404,56 +393,27 @@ public class Main {
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
         int offset;
-                List<String> input = inputreaderEachLineValue(path + "d5.txt");
+        List<String> input = inputreaderEachLineValue(path + "d5.txt");
         List<Integer> seats = new ArrayList<>();
 
-        /*
-        F = 0
-        B = 1
-        R = 1
-        L = 0
-         */
-
         timer1 = System.currentTimeMillis();
+
         for (String data : input) {
-            int row = 0;
-            int collum = 0;
-            int count = 0;
-            int seat = 0;
-
-
             data = data.replaceAll("F", "0");
             data = data.replaceAll("L", "0");
             data = data.replaceAll("B", "1");
             data = data.replaceAll("R", "1");
-
-            for (int i = 6; i >= 0; i--) {
-                int number = Integer.parseInt(String.valueOf(data.charAt(i)));
-                row = (int) (row + (number * Math.pow(2, count)));
-                count++;
-            }
-            count = 0;
-            for (int i = 9; i >= 7; i--) {
-                int number = Integer.parseInt(String.valueOf(data.charAt(i)));
-                collum = (int) (collum + (number * Math.pow(2, count)));
-                count++;
-            }
-            seat = (row * 8) + collum;
-            seats.add(seat);
-            if (seat > correctanswerT1) {
-                correctanswerT1 = seat;
-            }
+            seats.add(Integer.parseInt(data,2));
         }
 
         Collections.sort(seats);
 
         offset = seats.get(0);
+        correctanswerT1 = seats.size() + offset;
 
-        for (int i = 0; i < seats.size(); i++) {
-            if (seats.get(i) != i + offset) {
-                correctanswerT2 = i + offset;
-                break;
-            }
+        for (int i = 0; seats.get(i) == i + offset; i++) {
+            //offset+1 because i+1 is the one that ends the loop and is the right answer
+            correctanswerT2 = i + offset + 1;
         }
         timer2 = System.currentTimeMillis();
 
