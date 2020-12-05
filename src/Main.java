@@ -262,8 +262,8 @@ public class Main {
 
         correctanswerT1 = partsesult[1];
 
-        for (int i = 0; i < partsesult.length; i++) {
-            correctanswerT2 = correctanswerT2 * partsesult[i];
+        for (int j : partsesult) {
+            correctanswerT2 = correctanswerT2 * j;
         }
 
         timer2 = System.currentTimeMillis();
@@ -287,7 +287,7 @@ public class Main {
 
         for (String data : input) {
             List<String> validPP = new ArrayList<>();
-            ;
+
             boolean correct = false;
             for (String code : codes) {
                 if (data.contains(code)) {
@@ -304,9 +304,7 @@ public class Main {
 
                 String[] validPUnsort = data.split(" ");
 
-                for (String data2 : validPUnsort) {
-                    validPP.add(data2);
-                }
+                Collections.addAll(validPP, validPUnsort);
                 if (validPP.size() == 7) {
                     validPP.add("cid: 420");
                 }
