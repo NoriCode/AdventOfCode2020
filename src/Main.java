@@ -277,7 +277,7 @@ public class Main {
                 int byr = Integer.parseInt(validPP.get(0).substring(validPP.get(0).indexOf(":") + 1));
                 int eyr = Integer.parseInt(validPP.get(3).substring(validPP.get(3).indexOf(":") + 1));
                 int iyr = Integer.parseInt(validPP.get(6).substring(validPP.get(6).indexOf(":") + 1));
-                int hgt2 = Integer.parseInt(hgt.substring(0, hgt.length() - 2));
+                int hgt2 = Integer.parseInt(hgt.replaceAll("[a-z]+", ""));
 
                 for (String eclSingle : eclList) {
                     if (ecl.equals(eclSingle)) {
