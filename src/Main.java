@@ -245,8 +245,8 @@ public class Main {
 
         for (String data : input) {
             validPP.clear();
-
             boolean correct = false;
+
             for (String code : codes) {
                 if (data.contains(code)) {
                     correct = true;
@@ -266,7 +266,6 @@ public class Main {
                 }
 
                 Collections.sort(validPP);
-                boolean ppCorrect = true;
                 boolean hit = false;
 
                 String ecl = validPP.get(2).substring(validPP.get(2).indexOf(":") + 1);
@@ -286,31 +285,31 @@ public class Main {
                     }
                 }
                 if (!hit) {
-                    ppCorrect = false;
+                    correct = false;
                 }
 
                 if ((byr > 2002 || byr < 1920) || (eyr > 2030 || eyr < 2020) || (iyr > 2020 || iyr < 2010)) {
-                    ppCorrect = false;
+                    correct = false;
                 }
 
                 if ((!pid.matches("-?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]+.?[0-9]")) || (!hcl.matches("#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})"))) {
-                    ppCorrect = false;
+                    correct = false;
                 }
                 if (hgt.contains("in")) {
                     if (hgt2 > 76 || hgt2 < 59) {
-                        ppCorrect = false;
+                        correct = false;
                     }
                 } else if (hgt.contains("cm")) {
                     if (hgt2 > 193 || hgt2 < 150) {
-                        ppCorrect = false;
+                        correct = false;
                     }
                 } else {
-                    ppCorrect = false;
+                    correct = false;
                 }
-
-                if (ppCorrect) {
+                if (correct) {
                     correctanswerT2++;
                 }
+
             }
         }
 
