@@ -19,10 +19,10 @@ public class Main {
 
         System.out.println("\nDay 5");
         d5(path);
-/*
+
         System.out.println("\nDay 6");
         d6(path);
-
+/*
         System.out.println("\nDay 7");
         d7(path);
 
@@ -265,6 +265,7 @@ public class Main {
                 int byr = Integer.parseInt(validPP.get(0).substring(validPP.get(0).indexOf(":") + 1));
                 int eyr = Integer.parseInt(validPP.get(3).substring(validPP.get(3).indexOf(":") + 1));
                 int iyr = Integer.parseInt(validPP.get(6).substring(validPP.get(6).indexOf(":") + 1));
+
                 int hgt2 = Integer.parseInt(hgt.replaceAll("[a-z]+", ""));
 
                 for (String eclSingle : eclList) {
@@ -289,9 +290,9 @@ public class Main {
                 } else {
                     correct = false;
                 }
-                if (correct) {
-                    correctanswerT2++;
-                }
+            }
+            if (correct) {
+                correctanswerT2++;
             }
         }
 
@@ -342,11 +343,37 @@ public class Main {
         long timer2;
         int correctanswerT1 = 0;
         int correctanswerT2 = 0;
-        List<String> input = Helpers.inputreaderEachLineValue(path + "d6.txt");
+        List<String> input = Helpers.inputreaderEmptyLineSeperated(path + "d6.txt");
+        HashSet<Character> answers = new HashSet<>();
+        List<Character> answers2 = new ArrayList<>();
+
+        List<String> person = new ArrayList<>();
 
         timer1 = System.currentTimeMillis();
         for (String data : input) {
-            System.out.println(data);
+            answers.clear();
+            person.clear();
+
+            Collections.addAll(person, data.split(" "));
+
+            data = data.replaceAll(" ", "");
+            for (int i = 0; i < data.length(); i++) {
+                answers.add(data.charAt(i));
+            }
+            correctanswerT1 += answers.size();
+            answers.clear();
+
+            for (int i = 0; i < person.get(0).length(); i++) {
+                answers.add(person.get(0).charAt(i));
+            }
+            for (String personAnswer : person) {
+                answers2.clear();
+                for (int i = 0; i < personAnswer.length(); i++) {
+                    answers2.add(personAnswer.charAt(i));
+                }
+                answers.retainAll(answers2);
+            }
+            correctanswerT2 += answers.size();
         }
         timer2 = System.currentTimeMillis();
 
